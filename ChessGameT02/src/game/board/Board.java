@@ -70,7 +70,7 @@ public class Board {
 		}
 	}
 
-	private void clearOpponentPositionsOnBoard() {
+	public void clearOpponentPositionsOnBoard() {
 		for (int i = 0; i < board_size; i++) {
 			for (int j = 0; j < board_size; j++) {
 				if (board[i][j].getPieceOnTile() != null
@@ -85,10 +85,10 @@ public class Board {
 
 	public void generateOpponentPositions() {
 		clearOpponentPositionsOnBoard();
-
 		for (int i = 0; i < board_size; i++) {
 			for (int j = 0; j < board_size; j++) {
-				if (opponent_board.getTiles()[i][j].getPieceOnTile() != null) {
+				if (opponent_board.getTiles()[i][j].getPieceOnTile() != null && opponent_board.getTiles()[i][j]
+						.getPieceOnTile().getColor() == opponent_board.current_player_alliance) {
 					if (board[board_size - 1 - i][board_size - 1 - j].getPieceOnTile() != null) {
 						board[board_size - 1 - i][board_size - 1 - j].getPieceOnTile().kill();
 					}
@@ -227,7 +227,9 @@ public class Board {
 		int alive = 0;
 		for (int i = 0; i < board_size; i++) {
 			for (int j = 0; j < board_size; j++) {
-				if (board[i][j].getPieceOnTile().isAlive())
+				if (board[i][j].getPieceOnTile() != null
+						&& board[i][j].getPieceOnTile().getColor() == current_player_alliance
+						&& board[i][j].getPieceOnTile().isAlive())
 					alive++;
 			}
 		}
@@ -251,7 +253,15 @@ public class Board {
 	}
 
 	public boolean isCheckmate() {
-		return isCheck() && movesThatSavesKing() <= 0 && getAlivePieces() <= 1;
+		return (isCheck() && movesThatSavesKing() <= 0) || getAlivePieces() <= 1;
+	}
+
+	public Board getOpponentBoard() {
+		return opponent_board;
+	}
+
+	public void setOpponentBoard(Board b) {
+		opponent_board = b;
 	}
 
 	public Tile[][] getTiles() {

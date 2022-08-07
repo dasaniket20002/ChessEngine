@@ -106,7 +106,8 @@ public class GameHandler extends Thread {
 
 		Piece pieceOnTile = board.getTiles()[InputHandler.getInstance().getMouseClickedCoordinate().getX()][InputHandler
 				.getInstance().getMouseClickedCoordinate().getY()].getPieceOnTile();
-		if (turn && pieceOnTile != null && pieceOnTile.isAlive() && pieceOnTile.getColor() == board.getPlayerAlliance()) {
+		if (turn && pieceOnTile != null && pieceOnTile.isAlive()
+				&& pieceOnTile.getColor() == board.getPlayerAlliance()) {
 			for (Move m : pieceOnTile.getGeneratedMoves()) {
 				Tile gui = new Tile(m.getDestination(), m.isAttackMove() ? Alliance.HIGHLIGHT_A : Alliance.HIGHLIGHT_M);
 				Window.getInstance().getPanel().addGuiTiles(gui);
@@ -118,6 +119,15 @@ public class GameHandler extends Thread {
 			Tile gui = new Tile(king, Alliance.HIGHLIGHT_C);
 			Window.getInstance().getPanel().addGuiTiles(gui);
 		}
+
+//		Board opponentDummy = DeepCloner.getInstance().deepClone(board.getOpponentBoard());
+//		opponentDummy.setOpponentBoard(board);
+//		opponentDummy.generateOpponentPositions();
+//		if (opponentDummy.isCheck()) {
+//			Coordinate king = opponentDummy.getKingCoordinate();
+//			Tile gui = new Tile(king, Alliance.HIGHLIGHT_C);
+//			Window.getInstance().getPanel().addGuiTiles(gui);
+//		}
 	}
 
 	public void listenToMouseClick(Coordinate mouse) {
@@ -125,7 +135,8 @@ public class GameHandler extends Thread {
 		Window.getInstance().getPanel().setClickedTile(new Tile(mouse, Alliance.HIGHLIGHT_S));
 		Piece pieceOnTile = board.getTiles()[mouse.getX()][mouse.getY()].getPieceOnTile();
 
-		if (turn && pieceOnTile != null && pieceOnTile.isAlive() && pieceOnTile.getColor() == board.getPlayerAlliance()) {
+		if (turn && pieceOnTile != null && pieceOnTile.isAlive()
+				&& pieceOnTile.getColor() == board.getPlayerAlliance()) {
 			pieceOnTile.generateValidMoves(board, mouse);
 			pieceOnTile.handleCheckCondition(board, mouse);
 		}
